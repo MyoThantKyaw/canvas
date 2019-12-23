@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <canvas id="c" width="500" height="300"></canvas>
+    <script>
+        
+        function midPointBtw(p1, p2) {
+        return {
+          x: p1.x + (p2.x - p1.x) / 2,
+          y: p1.y + (p2.y - p1.y) / 2
+        };
+}
+
+var el = document.getElementById('c');
+var ctx = el.getContext('2d');
+
+ctx.lineWidth = 2;
+ctx.lineJoin = ctx.lineCap = 'round';
+
+var  points = [ ];
+
+for (var i = 0; i < 400; i++){
+  points.push({x : i, y : 3 * Math.sqrt(i)})
+}
+
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  
+  var p1 = points[0];
+  var p2 = points[1];
+  
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  console.log(points);
+
+  for (var i = 1, len = points.length; i < len; i++) {
+    // we pick the point between pi+1 & pi+2 as the
+    // end point and p1 as our control point
+    var midPoint = midPointBtw(p1, p2);
+    ctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+    p1 = points[i];
+    p2 = points[i+1];
+  }
+  // Draw last line as a straight line while
+  // we wait for the next point to be able to calculate
+  // the bezier control point
+  ctx.lineTo(p1.x, p1.y);
+  ctx.stroke();
+    
+    </script>
+
+</body>
+</html>
